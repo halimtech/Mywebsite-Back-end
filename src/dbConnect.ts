@@ -1,5 +1,6 @@
 import { createConnection } from "typeorm"
 import 'dotenv/config'
+import { post } from "./entity/post"
 
 const conn = async () => {
     await createConnection({
@@ -9,7 +10,7 @@ const conn = async () => {
         password: process.env.DB_PASS,
         logging: true,
         synchronize: true,
-        entities: [],
+        entities: [post],
     })
 }
 

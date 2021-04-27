@@ -3,6 +3,7 @@ import express from "express"
 import { buildSchema } from "type-graphql"
 import DBconn from "./dbConnect"
 import { HelloResolver } from "./resolver/hello"
+import { PostResolver } from "./resolver/Post"
 
 
 const main = async () => {
@@ -12,7 +13,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [HelloResolver],
+            resolvers: [HelloResolver, PostResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res })
