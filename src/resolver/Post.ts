@@ -1,5 +1,5 @@
 import { post } from "../entity/post";
-import { MyContext } from "src/types";
+import { MyContext } from "../types";
 import {
     InputType,
     Field,
