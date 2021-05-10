@@ -5,6 +5,7 @@ import DBconn from "./dbConnect"
 import { HelloResolver } from "./resolver/hello"
 import { PostResolver } from "./resolver/Post"
 import cors from "cors"
+import { ProjectResolver } from "./resolver/Project"
 
 
 const main = async () => {
@@ -20,7 +21,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [HelloResolver, PostResolver],
+            resolvers: [HelloResolver, PostResolver, ProjectResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res })

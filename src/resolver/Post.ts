@@ -8,7 +8,9 @@ import {
     Mutation,
     Resolver,
     Ctx
-} from "type-graphql";
+} from "type-graphql"
+import 'dotenv/config'
+import { fakers } from "../utils/moc";
 
 @InputType()
 export class PostInput {
@@ -36,14 +38,19 @@ export class PostResolver {
         return post.findOne(id)
     }
 
-    @Mutation(() => post)
+    @Mutation(() => post || null)
     async createPost(
         @Arg("input") input: PostInput,
+        @Arg("pass") password: string,
         @Ctx() { }: MyContext
-    ): Promise<post> {
-        return post.create({
-            ...input,
-        }).save()
+    ) {
+        if (password === process.env.DB_PASS) {
+            return post.create({
+                ...input,
+            }).save()
+        } else {
+            return fakers
+        }
     }
 
     @Mutation(() => post, { nullable: true })
@@ -52,22 +59,27 @@ export class PostResolver {
         @Arg("title") title: string,
         @Arg("text") text: string,
         @Arg("picture") picture: string,
+        @Arg("pass") password: string,
     ): Promise<post | null> {
-        const findPost = await post.findOne({ id })
-        if (!findPost) {
-            return null
+        if (password === process.env.DB_PASS) {
+            const findPost = await post.findOne({ id })
+            if (!findPost) {
+                return null
+            }
+            if (title !== "") {
+                findPost.title = title
+            }
+            if (text !== "") {
+                findPost.text = text
+            }
+            if (picture !== "") {
+                findPost.picture = picture
+            }
+            await post.save(findPost)
+            return findPost
+        } else {
+            return null;
         }
-        if (title !== "") {
-            findPost.title = title
-        }
-        if (text !== "") {
-            findPost.text = text
-        }
-        if (picture !== "") {
-            findPost.picture = picture
-        }
-        await post.save(findPost)
-        return findPost
     }
 
 
