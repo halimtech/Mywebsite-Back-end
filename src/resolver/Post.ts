@@ -86,15 +86,18 @@ export class PostResolver {
     @Mutation(() => Boolean)
     async deletePost(
         @Arg("id") id: number,
+        @Arg("pass") password: string,
     ): Promise<boolean> {
-        const findPost = await post.findOne({ id })
-        if (!findPost) {
-            return false
-        } else {
-            await post.delete({ id })
-            return true
-        }
+        if (password === process.env.DB_PASS) {
+            const findPost = await post.findOne({ id })
+            if (!findPost) {
+                return false
+            } else {
+                await post.delete({ id })
+                return true
+            }
 
+        } return false
     }
 
 }

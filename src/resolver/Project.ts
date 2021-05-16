@@ -43,5 +43,53 @@ export class ProjectResolver {
             return fakersProj
         }
     }
+    @Mutation(() => project, { nullable: true })
+    async updateproject(
+        @Arg("id") id: number,
+        @Arg("title") title: string,
+        @Arg("text") text: string,
+        @Arg("picture") picture: string,
+        @Arg("pass") password: string,
+    ): Promise<project | null> {
+        if (password === process.env.DB_PASS) {
+            const findproject = await project.findOne({ id })
+            if (!findproject) {
+                return null
+            }
+            if (title !== "") {
+                findproject.title = title
+            }
+            if (text !== "") {
+                findproject.text = text
+            }
+            if (picture !== "") {
+                findproject.picture = picture
+            }
+            await project.save(findproject)
+            return findproject
+        } else {
+            return null;
+        }
+    }
+
+
+    @Mutation(() => Boolean)
+    async deleteproject(
+        @Arg("id") id: number,
+        @Arg("pass") password: string,
+    ): Promise<boolean> {
+        if (password === process.env.DB_PASS) {
+            const findproject = await project.findOne({ id })
+            if (!findproject) {
+                return false
+            } else {
+                await project.delete({ id })
+                return true
+            }
+
+        } return false
+    }
+
+
 
 }
