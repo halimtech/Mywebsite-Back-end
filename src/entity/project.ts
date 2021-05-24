@@ -27,6 +27,10 @@ export class project extends BaseEntity {
     @Column()
     picture!: string
 
+    @Field()
+    @Column()
+    link!: string
+
     @Field(() => String)
     @CreateDateColumn()
     createdAt: Date

@@ -20,6 +20,8 @@ export class ProjectInput {
     text: string
     @Field()
     picture: string
+    @Field()
+    link: string
 }
 
 @Resolver()
@@ -43,12 +45,29 @@ export class ProjectResolver {
             return fakersProj
         }
     }
+
+    @Mutation(() => project || null)
+    async createPost(
+        @Arg("input") input: ProjectInput,
+        @Arg("pass") password: string,
+        @Ctx() { }: MyContext
+    ) {
+        if (password === process.env.DB_PASS) {
+            return project.create({
+                ...input,
+            }).save()
+        } else {
+            return fakersProj
+        }
+    }
+
     @Mutation(() => project, { nullable: true })
     async updateproject(
         @Arg("id") id: number,
         @Arg("title") title: string,
         @Arg("text") text: string,
         @Arg("picture") picture: string,
+        @Arg("link") link: string,
         @Arg("pass") password: string,
     ): Promise<project | null> {
         if (password === process.env.DB_PASS) {
@@ -64,6 +83,9 @@ export class ProjectResolver {
             }
             if (picture !== "") {
                 findproject.picture = picture
+            }
+            if (link !== "") {
+                findproject.link = link
             }
             await project.save(findproject)
             return findproject
