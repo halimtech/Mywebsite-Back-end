@@ -14,7 +14,7 @@ const main = async () => {
     DBconn()
     app.use(
         cors({
-            origin: 'http://127.0.0.1:3000',
+            origin: 'https://halimtech.vercel.app',
             //credentials: true
         })
     )
