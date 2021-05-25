@@ -37,22 +37,7 @@ export class ProjectResolver {
         @Arg("pass") password: string,
         @Ctx() { }: MyContext
     ) {
-        if (password === process.env.DB_PASS) {
-            return project.create({
-                ...input,
-            }).save()
-        } else {
-            return fakersProj
-        }
-    }
-
-    @Mutation(() => project || null)
-    async createPost(
-        @Arg("input") input: ProjectInput,
-        @Arg("pass") password: string,
-        @Ctx() { }: MyContext
-    ) {
-        if (password === process.env.DB_PASS) {
+        if (password === process.env.PASS) {
             return project.create({
                 ...input,
             }).save()
@@ -70,7 +55,7 @@ export class ProjectResolver {
         @Arg("link") link: string,
         @Arg("pass") password: string,
     ): Promise<project | null> {
-        if (password === process.env.DB_PASS) {
+        if (password === process.env.PASS) {
             const findproject = await project.findOne({ id })
             if (!findproject) {
                 return null
@@ -100,7 +85,7 @@ export class ProjectResolver {
         @Arg("id") id: number,
         @Arg("pass") password: string,
     ): Promise<boolean> {
-        if (password === process.env.DB_PASS) {
+        if (password === process.env.PASS) {
             const findproject = await project.findOne({ id })
             if (!findproject) {
                 return false

@@ -44,7 +44,7 @@ export class PostResolver {
         @Arg("pass") password: string,
         @Ctx() { }: MyContext
     ) {
-        if (password === process.env.DB_PASS) {
+        if (password === process.env.PASS) {
             return post.create({
                 ...input,
             }).save()
@@ -61,7 +61,7 @@ export class PostResolver {
         @Arg("picture") picture: string,
         @Arg("pass") password: string,
     ): Promise<post | null> {
-        if (password === process.env.DB_PASS) {
+        if (password === process.env.PASS) {
             const findPost = await post.findOne({ id })
             if (!findPost) {
                 return null
@@ -88,7 +88,7 @@ export class PostResolver {
         @Arg("id") id: number,
         @Arg("pass") password: string,
     ): Promise<boolean> {
-        if (password === process.env.DB_PASS) {
+        if (password === process.env.PASS) {
             const findPost = await post.findOne({ id })
             if (!findPost) {
                 return false
