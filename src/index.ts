@@ -31,8 +31,8 @@ const main = async () => {
         app, cors: false,
     })
 
-    app.listen(8080, () => {
-        console.log(`🚀 server running @3000`);
+    app.listen(process.env.PORT, () => {
+        console.log(`🚀 server running @8080`);
 
     })
 }
